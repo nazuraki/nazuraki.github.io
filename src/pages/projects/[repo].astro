@@ -1,0 +1,277 @@
+---
+import { existsSync } from 'fs';
+import { join } from 'path';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getRepos, getRepo, getLanguages, langPercentages, formatDate } from '../../lib/github';
+
+export async function getStaticPaths() {
+  const repos = await getRepos();
+  return repos.map(r => ({ params: { repo: r.name } }));
+}
+
+const { repo: repoName } = Astro.params;
+const [repo, rawLangs] = await Promise.all([
+  getRepo(repoName),
+  getLanguages(repoName),
+]);
+const langs = langPercentages(rawLangs);
+const hasScreenshot = existsSync(join(process.cwd(), 'public', 'screenshots', `${repoName}.png`));
+
+const cloneUrl = `git clone https://github.com/nazuraki/${repoName}.git`;
+---
+
+<BaseLayout title={repo.name} activeNav="projects">
+  <main class="max-w-7xl mx-auto px-6 py-12 md:py-20">
+
+    <!-- Hero -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end mb-20">
+      <div class="lg:col-span-8">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-sm text-[10px] font-bold uppercase tracking-[0.2em]">
+            Repository Ledger
+          </span>
+          {repo.language && (
+            <span class="text-outline font-label text-xs">
+              // {repo.language}
+            </span>
+          )}
+        </div>
+        <h1 class="font-headline font-bold text-5xl md:text-7xl tracking-tighter leading-none text-on-surface mb-8 uppercase">
+          {repo.name.replace(/-/g, '-\u200B')}
+        </h1>
+        {repo.description && (
+          <p class="font-body text-xl text-on-surface-variant max-w-2xl leading-relaxed">
+            {repo.description}
+          </p>
+        )}
+      </div>
+
+      <div class="lg:col-span-4 flex flex-col gap-4">
+        <div class="grid grid-cols-2 gap-4">
+          <a
+            href={repo.html_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center justify-center gap-2 bg-surface-container-high hover:bg-surface-container-highest transition-all py-4 rounded-md group"
+          >
+            <span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="font-headline font-bold uppercase text-xs tracking-widest text-on-surface">
+              Stars <span class="text-primary ml-1">{repo.stargazers_count.toLocaleString()}</span>
+            </span>
+          </a>
+          <a
+            href={`${repo.html_url}/fork`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center justify-center gap-2 bg-surface-container-high hover:bg-surface-container-highest transition-all py-4 rounded-md group"
+          >
+            <span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">fork_right</span>
+            <span class="font-headline font-bold uppercase text-xs tracking-widest text-on-surface">
+              Forks <span class="text-primary ml-1">{repo.forks_count.toLocaleString()}</span>
+            </span>
+          </a>
+        </div>
+        <a
+          href={repo.html_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full technical-gradient text-on-primary-fixed py-4 rounded-md font-headline font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:opacity-90 active:scale-[0.98] transition-all"
+        >
+          <span class="material-symbols-outlined">open_in_new</span>
+          View on GitHub
+        </a>
+      </div>
+    </section>
+
+    <!-- Stats bento -->
+    <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-20">
+      <div class="md:col-span-2 bg-surface-container-low p-8 rounded-md flex flex-col justify-between min-h-[180px]">
+        <span class="font-label text-xs uppercase tracking-[0.3em] text-on-surface-variant">Open Issues</span>
+        <div class="flex flex-col">
+          <span class="font-headline text-[3.5rem] font-bold text-primary leading-none">
+            {repo.open_issues_count}
+          </span>
+          <span class="font-body text-sm text-outline mt-2">
+            Active issue backlog
+          </span>
+        </div>
+      </div>
+      <div class="bg-surface-container-high p-8 rounded-md flex flex-col justify-between">
+        <span class="font-label text-xs uppercase tracking-[0.3em] text-on-surface-variant">Stars</span>
+        <span class="font-headline text-5xl font-bold text-on-surface">
+          {repo.stargazers_count.toLocaleString()}
+        </span>
+      </div>
+      <div class="bg-secondary-container p-8 rounded-md flex flex-col justify-between">
+        <span class="font-label text-xs uppercase tracking-[0.3em] text-on-secondary-container">Forks</span>
+        <span class="font-headline text-5xl font-bold text-on-surface">
+          {repo.forks_count.toLocaleString()}
+        </span>
+        <span class="material-symbols-outlined text-on-secondary-container self-end text-3xl">fork_right</span>
+      </div>
+    </section>
+
+    <!-- Screenshot -->
+    {hasScreenshot && (
+      <section class="mb-20">
+        <h3 class="font-headline text-2xl font-bold mb-8 uppercase tracking-widest flex items-center gap-4">
+          <span class="w-8 h-[2px] bg-primary"></span> Preview
+        </h3>
+        <div class="rounded-md overflow-hidden bg-surface-container-low">
+          <img
+            src={`/screenshots/${repoName}.png`}
+            alt={`Screenshot of ${repoName}`}
+            class="w-full object-cover"
+          />
+        </div>
+      </section>
+    )}
+
+    <!-- Main content + sidebar -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-8 space-y-16">
+
+        <!-- Overview -->
+        {repo.description && (
+          <section>
+            <h3 class="font-headline text-2xl font-bold mb-8 uppercase tracking-widest flex items-center gap-4">
+              <span class="w-8 h-[2px] bg-primary"></span> Overview
+            </h3>
+            <div class="bg-surface p-8 rounded-md">
+              <p class="font-body text-on-surface-variant leading-relaxed">
+                {repo.description}
+              </p>
+              {repo.homepage && (
+                <a
+                  href={repo.homepage}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 mt-6 text-primary font-headline font-bold text-xs uppercase tracking-widest hover:opacity-80 transition-opacity"
+                >
+                  <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+                  Live Site
+                </a>
+              )}
+            </div>
+          </section>
+        )}
+
+        <!-- Clone -->
+        <section>
+          <h3 class="font-headline text-2xl font-bold mb-8 uppercase tracking-widest flex items-center gap-4">
+            <span class="w-8 h-[2px] bg-primary"></span> Clone
+          </h3>
+          <div class="bg-surface-container-lowest overflow-hidden rounded-md">
+            <div class="flex items-center justify-between px-6 py-4 bg-surface-container-highest">
+              <span class="font-label text-xs text-on-surface-variant uppercase tracking-widest">terminal // shell</span>
+              <button
+                id="copy-btn"
+                data-clone={cloneUrl}
+                class="material-symbols-outlined text-on-surface-variant text-sm cursor-pointer hover:text-primary transition-colors"
+                aria-label="Copy clone command"
+              >content_copy</button>
+            </div>
+            <div class="p-8 font-headline text-base leading-relaxed text-primary-fixed-dim">
+              <span class="text-primary/40 mr-4 select-none">$</span>{cloneUrl}
+            </div>
+          </div>
+        </section>
+
+        <!-- Topics -->
+        {repo.topics.length > 0 && (
+          <section>
+            <h3 class="font-headline text-2xl font-bold mb-8 uppercase tracking-widest flex items-center gap-4">
+              <span class="w-8 h-[2px] bg-primary"></span> Archive Tags
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              {repo.topics.map(topic => (
+                <span class="bg-surface-container-highest text-primary px-3 py-1 rounded-sm text-[10px] font-bold uppercase tracking-widest">
+                  {topic}
+                </span>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="lg:col-span-4 space-y-8">
+
+        <!-- Metadata -->
+        <div class="bg-surface-container p-8 rounded-md">
+          <h4 class="font-headline text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant mb-8">
+            Metadata Ledger
+          </h4>
+          <div class="space-y-6">
+            {repo.license && (
+              <div class="flex justify-between items-center pb-4 border-b border-outline-variant/10">
+                <span class="text-sm font-body text-outline">License</span>
+                <span class="text-sm font-headline font-bold text-on-surface uppercase">{repo.license.spdx_id}</span>
+              </div>
+            )}
+            {repo.language && (
+              <div class="flex justify-between items-center pb-4 border-b border-outline-variant/10">
+                <span class="text-sm font-body text-outline">Language</span>
+                <span class="text-sm font-headline font-bold text-on-surface">{repo.language}</span>
+              </div>
+            )}
+            <div class="flex justify-between items-center pb-4 border-b border-outline-variant/10">
+              <span class="text-sm font-body text-outline">Stars</span>
+              <span class="text-sm font-headline font-bold text-on-surface">{repo.stargazers_count.toLocaleString()}</span>
+            </div>
+            <div class="flex justify-between items-center pb-4 border-b border-outline-variant/10">
+              <span class="text-sm font-body text-outline">Forks</span>
+              <span class="text-sm font-headline font-bold text-on-surface">{repo.forks_count.toLocaleString()}</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-body text-outline">Last Push</span>
+              <span class="text-sm font-headline font-bold text-on-surface">{formatDate(repo.pushed_at)}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Language breakdown -->
+        {langs.length > 0 && (
+          <div class="bg-surface-container-low p-8 rounded-md">
+            <h4 class="font-headline text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant mb-6">
+              Language Breakdown
+            </h4>
+            <div class="space-y-4">
+              {langs.map(({ name, pct }) => (
+                <div>
+                  <div class="flex justify-between text-[10px] font-label uppercase tracking-wider mb-2">
+                    <span>{name}</span>
+                    <span>{pct}%</span>
+                  </div>
+                  <div class="h-[2px] w-full bg-surface-container-lowest overflow-hidden rounded-full">
+                    <div class="h-full bg-primary" style={`width: ${pct}%`}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <!-- Back -->
+        <a
+          href="/"
+          class="flex items-center gap-2 text-outline hover:text-primary transition-colors font-headline font-bold text-xs uppercase tracking-widest"
+        >
+          <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+          Back to Ledger
+        </a>
+      </aside>
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  const btn = document.getElementById('copy-btn');
+  btn?.addEventListener('click', () => {
+    const text = btn.dataset.clone ?? '';
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'check';
+      setTimeout(() => { btn.textContent = 'content_copy'; }, 2000);
+    });
+  });
+</script>

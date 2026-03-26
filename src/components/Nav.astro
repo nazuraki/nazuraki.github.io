@@ -1,0 +1,49 @@
+---
+interface Props {
+  activeNav?: 'projects' | 'experience' | 'about' | 'contact';
+}
+const { activeNav } = Astro.props;
+
+const links = [
+  { key: 'projects',    label: 'Projects',    href: '/' },
+  { key: 'experience',  label: 'Experience',  href: '/experience' },
+  { key: 'about',       label: 'About',       href: '/about' },
+  { key: 'contact',     label: 'Contact',     href: '/contact' },
+] as const;
+---
+
+<header class="sticky top-0 z-50 px-4 pt-4">
+  <nav
+    class="flex justify-between items-center w-full max-w-5xl mx-auto px-8 py-4
+           bg-surface-variant/60 backdrop-blur-3xl rounded-md
+           shadow-[0_32px_64px_-4px_rgba(229,225,228,0.06)]"
+  >
+    <a href="/" class="text-xl font-bold tracking-tighter text-on-surface font-headline">
+      nazuraki
+    </a>
+
+    <div class="hidden md:flex items-center gap-8">
+      {links.map(({ key, label, href }) => (
+        <a
+          href={href}
+          class={[
+            'font-headline font-bold tracking-tight text-sm uppercase transition-colors',
+            activeNav === key
+              ? 'text-primary border-b-2 border-primary pb-1'
+              : 'text-outline hover:text-on-surface',
+          ].join(' ')}
+        >
+          {label}
+        </a>
+      ))}
+    </div>
+
+    <a
+      href="/contact"
+      class="font-headline font-bold tracking-tight text-sm uppercase text-primary
+             hover:bg-surface-container-high transition-all px-4 py-2 rounded-md"
+    >
+      Contact
+    </a>
+  </nav>
+</header>

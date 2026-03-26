@@ -1,0 +1,29 @@
+---
+const year = new Date().getFullYear();
+
+const links = [
+  { icon: 'hub',     label: 'github',     href: 'https://github.com/nazuraki' },
+  { icon: 'article', label: 'about',    href: '/about' },
+  { icon: 'terminal',label: 'experience', href: '/experience' },
+  { icon: 'mail',    label: 'mail',     href: 'mailto:contact@nazuraki.tech' },
+];
+---
+
+<footer class="w-full flex flex-col md:flex-row justify-between items-center gap-6 py-12 px-8 bg-surface-container-lowest">
+  <p class="font-label text-xs font-medium uppercase tracking-widest text-outline">
+    © {year} nazuraki. Built with technical precision.
+  </p>
+
+  <div class="flex items-center gap-8">
+    {links.map(({ icon, label, href }) => (
+      <a
+        href={href}
+        class="text-outline hover:text-primary transition-colors duration-200 flex items-center gap-2"
+        aria-label={label}
+      >
+        <span class="material-symbols-outlined text-[18px]">{icon}</span>
+        <span class="font-label text-xs font-medium uppercase tracking-widest">{label}</span>
+      </a>
+    ))}
+  </div>
+</footer>

@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="About" activeNav="about">
+  <main class="max-w-7xl mx-auto px-6 py-20">
+
+    <!-- Hero -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24 items-start">
+      <div class="lg:col-span-8">
+        <div class="flex items-center gap-3 mb-8">
+          <span class="text-outline font-label text-xs uppercase tracking-[0.3em]">Architectural Profile // 001</span>
+        </div>
+        <h1 class="font-headline font-bold text-5xl md:text-7xl tracking-tighter leading-[1.05] text-on-surface mb-8">
+          Technical<br />
+          <span class="text-primary">Archivist</span> &<br />
+          Digital Engineer
+        </h1>
+      </div>
+      <div class="lg:col-span-4 pt-8">
+        <p class="font-body text-on-surface-variant leading-relaxed text-lg">
+          Translating complex system architectures into high-fidelity visual narratives.
+          Precision is not a goal — it's the foundation of every line rendered.
+        </p>
+      </div>
+    </section>
+
+    <!-- Core Protocol -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
+      <div class="lg:col-span-7 bg-surface-container-low p-10 rounded-md">
+        <h2 class="font-headline text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant mb-6 flex items-center gap-3">
+          <span class="material-symbols-outlined text-primary text-[16px]">terminal</span>
+          Core Protocol
+        </h2>
+        <p class="font-body text-on-surface-variant leading-relaxed mb-8">
+          Operating at the intersection of systematic design and technical precision.
+          Every interaction should behave like a well-organized physical archive —
+          dynamic, authoritative, and deeply indexed.
+        </p>
+        <!-- Replace these with your actual skills/tags -->
+        <div class="flex flex-wrap gap-2">
+          {['System Architecture', 'Data Visualization', 'API Design', 'Full-Stack', 'DevOps'].map(tag => (
+            <span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-sm text-[10px] font-bold uppercase tracking-widest">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 flex flex-col gap-6">
+        <div class="bg-surface-container p-8 rounded-md flex-1">
+          <span class="font-label text-xs uppercase tracking-[0.3em] text-outline block mb-2">Experience</span>
+          <span class="font-headline text-5xl font-bold text-primary">30+</span>
+          <span class="font-body text-sm text-on-surface-variant block mt-2">years of technical execution</span>
+        </div>
+        <div class="bg-surface-container-high p-8 rounded-md">
+          <span class="font-label text-xs uppercase tracking-[0.3em] text-outline block mb-4">Identity Node</span>
+          <span class="font-headline font-bold text-on-surface">NAZURAKI // EST. 1995</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Stack + Design Systems -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+      <div class="bg-surface-container-low p-8 rounded-md">
+        <h3 class="font-headline text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant mb-6">Technical Stack</h3>
+        <ul class="space-y-3">
+          {['Java / Micronaut', 'JavaScript / Node.js', 'TypeScript', 'Python', 'Go'].map(tech => (
+            <li class="flex justify-between items-center text-sm font-body text-on-surface-variant border-b border-outline-variant/10 pb-3">
+              <span>{tech}</span>
+              <span class="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="bg-surface-container-low p-8 rounded-md">
+        <h3 class="font-headline text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant mb-6">Disciplines</h3>
+        <ul class="space-y-3">
+          {['Software Architecture', 'Full-Stack Web', 'API / Database Design', 'Developer Tooling', 'Editorial UI'].map(d => (
+            <li class="flex justify-between items-center text-sm font-body text-on-surface-variant border-b border-outline-variant/10 pb-3">
+              <span>{d}</span>
+              <span class="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Philosophy -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
+      <div>
+        <h2 class="font-headline text-2xl font-bold mb-8 uppercase tracking-widest flex items-center gap-4">
+          <span class="w-8 h-[2px] bg-primary"></span> Philosophy of Precision
+        </h2>
+        <p class="font-body text-on-surface-variant leading-relaxed">
+          Software should behave like a well-organized physical archive. Every interaction
+          is intentional, every data point should have a clear origin, and the visual
+          hierarchy should guide the user through complexity without overwhelming them.
+        </p>
+      </div>
+      <div>
+        <p class="font-body text-on-surface-variant leading-relaxed mt-14 md:mt-0 pt-0 md:pt-14">
+          By leveraging tonal depth instead of arbitrary lines, I create interfaces that
+          feel integrated into the hardware. Work designed for high-stakes environments
+          where clarity equals speed, and speed equals success.
+        </p>
+      </div>
+    </section>
+
+  </main>
+</BaseLayout>

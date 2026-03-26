@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const roles = [
+  {
+    title: 'Principal Software Engineer',
+    period: '2022 — Present',
+    duration: '3+ yrs',
+    description: 'Principal engineering across platform-level services. Distributed systems, service architecture, and technical leadership on high-throughput delivery infrastructure.',
+    tags: ['Distributed Systems', 'Service Architecture', 'Technical Leadership'],
+    current: true,
+  },
+  {
+    title: 'Software Engineer → Senior Software Engineer',
+    period: '2006 — 2022',
+    duration: '15+ yrs',
+    description: 'Fifteen years building and scaling one of the largest travel platforms in the world. Full-stack ownership across site features, backend services, third-party integrations, and internal tooling.',
+    tags: ['Full-Stack', 'Platform Scale', 'Backend Services', 'API Integration'],
+    current: false,
+  },
+  {
+    title: 'Software Engineer',
+    period: '2004 — 2006',
+    duration: '1 yr 9 mos',
+    description: 'Product architecture and development for network management software. Administered Linux infrastructure and version control systems. Embedded systems experience at the hardware/software boundary.',
+    tags: ['Linux', 'Network Software', 'Embedded Systems'],
+    current: false,
+  },
+  {
+    title: 'Software Consultant',
+    period: '2003 — 2004',
+    duration: '1 yr',
+    description: 'Designed and built point-of-sale and inventory control systems for small businesses from scratch. End-to-end ownership from requirements through deployment.',
+    tags: ['POS Systems', 'Inventory Control', 'Full Ownership'],
+    current: false,
+  },
+  {
+    title: 'Self-Taught Development',
+    period: '1995 — 2003',
+    duration: '8 yrs',
+    description: 'The years before the resume. Obsessive systems tinkering, early web development, and the kind of deep curiosity about how computers work that never really stops.',
+    tags: ['Self-Taught', 'Web Development'],
+    current: false,
+  },
+];
+---
+
+<BaseLayout title="Experience" activeNav="experience">
+  <main class="max-w-7xl mx-auto px-6 py-20">
+
+    <!-- Hero -->
+    <header class="mb-24">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-sm text-[10px] font-bold uppercase tracking-[0.2em]">
+          Career Ledger
+        </span>
+        <span class="text-outline font-label text-xs">// EST. 1995</span>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+        <div class="lg:col-span-8">
+          <h1 class="font-headline font-bold text-5xl md:text-7xl tracking-tighter leading-none text-on-surface">
+            30+ Years<br /><span class="text-primary">Engineering</span> Record
+          </h1>
+        </div>
+        <div class="lg:col-span-4">
+          <p class="font-body text-on-surface-variant leading-relaxed">
+            From hand-built point-of-sale systems to principal engineering at scale.
+            A deliberate progression through every layer of the stack.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Stats bento -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-24">
+      <div class="bg-surface-container-low p-8 rounded-md col-span-2">
+        <span class="font-label text-xs uppercase tracking-[0.3em] text-on-surface-variant block mb-4">Active Since</span>
+        <span class="font-headline text-[3.5rem] font-bold text-primary leading-none">1995</span>
+      </div>
+      <div class="bg-surface-container-high p-8 rounded-md">
+        <span class="font-label text-xs uppercase tracking-[0.3em] text-on-surface-variant block mb-4">Companies</span>
+        <span class="font-headline text-5xl font-bold text-on-surface">4</span>
+      </div>
+      <div class="bg-secondary-container p-8 rounded-md">
+        <span class="font-label text-xs uppercase tracking-[0.3em] text-on-secondary-container block mb-4">Current</span>
+        <span class="font-headline text-xl font-bold text-on-surface leading-tight">Principal<br/>Engineer</span>
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="relative">
+
+      <!-- Vertical line -->
+      <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-outline-variant/20 hidden md:block"></div>
+
+      <div class="flex flex-col gap-0">
+        {roles.map((role, i) => (
+          <div class="relative grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 pb-16 group">
+
+            <!-- Timeline dot -->
+            <div class={`absolute left-0 top-1 w-3 h-3 rounded-full -translate-x-[5px] hidden md:block transition-colors ${role.current ? 'technical-gradient' : 'bg-surface-container-highest group-hover:bg-primary'}`}></div>
+
+            <!-- Left: period -->
+            <div class="md:col-span-3 md:pl-8">
+              <span class={`font-headline font-bold text-sm tracking-widest uppercase ${role.current ? 'text-primary' : 'text-on-surface-variant'}`}>
+                {role.period}
+              </span>
+              <div class="flex items-center gap-2 mt-2">
+                <span class="font-label text-xs text-outline uppercase tracking-wider">{role.duration}</span>
+                {role.current && (
+                  <span class="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
+                )}
+              </div>
+            </div>
+
+            <!-- Right: content -->
+            <div class="md:col-span-9">
+              <div class={`p-8 rounded-md transition-colors ${role.current ? 'bg-surface' : 'bg-surface-container-low group-hover:bg-surface-container'}`}>
+
+                <div class="mb-4">
+                  <h3 class="font-headline font-bold text-2xl text-on-surface tracking-tight">
+                    {role.title}
+                  </h3>
+                </div>
+
+                <p class="font-body text-on-surface-variant leading-relaxed mb-6">
+                  {role.description}
+                </p>
+
+                <div class="flex flex-wrap gap-2">
+                  {role.tags.map(tag => (
+                    <span class="bg-surface-container-highest text-primary px-3 py-1 rounded-sm text-[10px] font-bold uppercase tracking-widest">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+  </main>
+</BaseLayout>

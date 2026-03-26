@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+// Form submissions are handled by Formspree — set your endpoint below.
+// Get one free at https://formspree.io/
+const EMAIL = 'contact@nazuraki.tech';
+const FORMSPREE_ENDPOINT = import.meta.env.FORMSPREE_ENDPOINT ?? `mailto:${EMAIL}`;
+---
+
+<BaseLayout title="Contact" activeNav="contact">
+  <main class="max-w-7xl mx-auto px-6 py-20">
+
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
+
+      <!-- Left: identity -->
+      <div class="lg:col-span-5 flex flex-col gap-8">
+        <div>
+          <span class="text-outline font-label text-xs uppercase tracking-[0.3em] block mb-6">
+            Status: Architecting the Future
+          </span>
+          <h1 class="font-headline font-bold text-5xl md:text-6xl tracking-tighter leading-[1.05] text-on-surface">
+            Initialize<br />the Dialogue.
+          </h1>
+          <p class="font-body text-on-surface-variant leading-relaxed mt-6 text-lg">
+            A technical inquiry or a visionary collaboration — every message is logged,
+            archived, and prioritized with mathematical precision.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-6">
+          <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-primary">terminal</span>
+            <div>
+              <p class="font-label text-xs text-outline uppercase tracking-widest mb-1">Digital Terminal</p>
+              <p class="font-headline font-bold text-on-surface">{EMAIL}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-primary">location_on</span>
+            <div>
+              <p class="font-label text-xs text-outline uppercase tracking-widest mb-1">HQ Origin</p>
+              <p class="font-headline font-bold text-on-surface">Eastern Time (EST/EDT)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Availability -->
+        <div class="bg-secondary-container p-8 rounded-md">
+          <p class="font-label text-xs text-on-secondary-container uppercase tracking-[0.2em] mb-3">
+            Provide Availability
+          </p>
+          <p class="font-headline font-bold text-on-surface text-2xl">
+            Executing on initiatives and designing the next ones.
+          </p>
+        </div>
+      </div>
+
+      <!-- Right: form -->
+      <div class="lg:col-span-7 bg-surface-container-low p-10 rounded-md">
+        <form
+          method="POST"
+          action={FORMSPREE_ENDPOINT}
+          class="flex flex-col gap-6"
+          id="contact-form"
+        >
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex flex-col gap-2">
+              <label for="name" class="font-label text-xs text-outline uppercase tracking-[0.2em]">
+                Origin Name
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                placeholder="John Doe"
+                class="bg-surface-container-highest text-on-surface font-body text-sm px-4 py-3 rounded-sm
+                       border-0 outline-none focus:bg-secondary-container transition-colors
+                       placeholder:text-outline"
+              />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label for="email" class="font-label text-xs text-outline uppercase tracking-[0.2em]">
+                Return With
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                placeholder="archive@domain.com"
+                class="bg-surface-container-highest text-on-surface font-body text-sm px-4 py-3 rounded-sm
+                       border-0 outline-none focus:bg-secondary-container transition-colors
+                       placeholder:text-outline"
+              />
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="subject" class="font-label text-xs text-outline uppercase tracking-[0.2em]">
+              Inquiry Classification
+            </label>
+            <select
+              id="subject"
+              name="subject"
+              class="bg-surface-container-highest text-on-surface font-body text-sm px-4 py-3 rounded-sm
+                     border-0 outline-none focus:bg-secondary-container transition-colors appearance-none"
+            >
+              <option value="collaboration">Project Collaboration</option>
+              <option value="consulting">Technical Consulting</option>
+              <option value="employment">Employment Inquiry</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="message" class="font-label text-xs text-outline uppercase tracking-[0.2em]">
+              Manifest Details
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows="6"
+              placeholder="Define the scope of your communication..."
+              class="bg-surface-container-highest text-on-surface font-body text-sm px-4 py-3 rounded-sm
+                     border-0 outline-none focus:bg-secondary-container transition-colors resize-none
+                     placeholder:text-outline"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="technical-gradient text-on-primary-fixed font-headline font-bold uppercase
+                   tracking-[0.2em] text-sm px-8 py-4 rounded-md hover:opacity-90
+                   active:scale-[0.98] transition-all self-end"
+          >
+            Initialize Contact
+          </button>
+        </form>
+
+        {FORMSPREE_ENDPOINT === '#' && (
+          <p class="mt-4 text-xs text-outline font-label">
+            To enable form submissions, set <code class="text-primary">FORMSPREE_ENDPOINT</code> in your environment.
+          </p>
+        )}
+      </div>
+    </section>
+  </main>
+</BaseLayout>
