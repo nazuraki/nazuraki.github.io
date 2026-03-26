@@ -117,11 +117,11 @@ const cloneUrl = `git clone https://github.com/nazuraki/${repoName}.git`;
         <h3 class="font-headline text-2xl font-bold mb-8 uppercase tracking-widest flex items-center gap-4">
           <span class="w-8 h-[2px] bg-primary"></span> Preview
         </h3>
-        <div class="rounded-md overflow-hidden bg-surface-container-low">
+        <div class="rounded-md overflow-hidden bg-surface-container-low flex items-center justify-center max-h-[600px]">
           <img
             src={`/screenshots/${repoName}.png`}
             alt={`Screenshot of ${repoName}`}
-            class="w-full object-cover"
+            class="w-full h-full object-contain max-h-[600px]"
           />
         </div>
       </section>
