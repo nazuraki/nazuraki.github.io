@@ -24,8 +24,13 @@ preview: build
 typecheck:
     npx astro check
 
+lint: typecheck
+
 # Run all checks
 check: typecheck
+
+test:
+    echo "Not implemented."
 
 # Remove build artifacts
 clean:
